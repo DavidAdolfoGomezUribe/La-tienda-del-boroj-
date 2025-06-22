@@ -59,7 +59,7 @@ db.productos.updateMany({categoria:"Bebida" },{$push:{ tags:"bajo azúcar"} })
 
 - Eliminar el cliente que tenga el correo "juan@email.com".
 ```javascript
-db.clientes.findOne({email:"juan@email.com"})
+db.clientes.deleteOne({email:"juan@email.com"})
 ```
 ![alt text](image-6.png)
 
