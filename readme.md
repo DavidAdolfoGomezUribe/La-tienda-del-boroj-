@@ -186,3 +186,74 @@ function verificarStock(productoId, cantidadDeseada){let producto  = db.producto
 ```
 
 ![alt text](image-21.png)
+
+## Transacciones
+
+- Simular una venta:
+ a. Descontar del stock del producto
+ b. Insertar la venta en la colección `ventas`
+ Todo dentro de una transacción.
+
+```javascript
+const session = db.getMongo().startSession();
+const dbSession = session.getDatabase("tienda");
+session.startTransaction();
+try {
+
+    db.productos.updateOne({_id:1},{$inc:{stock:-1}});
+    db.ventas.insertOne({_id:11,clienteId:11,productos:[{productoId:1,cantidad:1}],fecha: ISODate("2025-06-16"),total:5000 } );
+    session.commitTransaction();
+    print("Venta registrada correctamente");
+
+} catch (error) {
+    session.abortTransaction();
+    print(error)
+    
+}finally{
+    session.endSession();
+};
+```
+![alt text](image-22.png)
+
+
+-  Simular la entrada de nuevo inventario:
+a. Insertar un documento en `inventario`
+b. Aumentar el stock del producto correspondiente
+Todo dentro de una transacción.
+
+```javascript
+const session = db.getMongo().startSession();
+const dbSession = session.getDatabase("tienda");
+
+session.startTransaction();
+
+try {
+  
+  db.inventario.insertOne({
+    productoId: 1,
+    lote: "L011",
+    cantidad: 10,
+    entrada: new Date()
+  });
+
+  
+ db.productos.updateOne(
+    { _id: 1 },
+    { $inc: { stock: 10 } },
+     );
+
+  
+  session.commitTransaction();
+  print("Entrada de inventario registrada con éxito.");
+} catch (error) {
+    print(" Error en la transacción:");
+    print(error)
+    session.abortTransaction();
+} finally {
+  session.endSession();
+}
+```
+
+![alt text](image-23.png)
+
+
