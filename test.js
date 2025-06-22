@@ -1,1 +1,1 @@
-db.ventas.aggregate([{ $unwind: "$productos" }, {$group: {_id: "$productos.productoId",totalUnidadesVendidas: { $sum: "$productos.cantidad" }}},{ $sort: { totalUnidadesVendidas: -1 } }])
+function calcularDescuento(precio, porcentaje){  let total = precio - (precio * porcentaje )/100; return total};

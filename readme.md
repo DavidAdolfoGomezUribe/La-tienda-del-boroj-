@@ -140,3 +140,37 @@ db.clientes.aggregate([{$project:{nombre:1,compras:{$size:"$compras"} } }])
 ![alt text](image-15.png)
 
 - Mostrar el total de ventas por mes (usa $group y $month).
+
+```javascript
+db.ventas.aggregate([{$project:{pormes:{$month:"$fecha"},total:1 }  },{$group:{_id:"$pormes",total:{$sum:"$total"} } } ])
+```
+
+![alt text](image-16.png)
+
+```javascript
+- Calcular el promedio de precios por categoría de producto.
+```
+db.productos.aggregate([{$group:{_id:"$categoria",promedio:{$avg:"$precio"} } }])
+
+![alt text](image-17.png)
+
+- Mostrar los 3 productos con mayor stock (orden descendente con $sort y $limit).   
+
+```javascript
+db.productos.aggregate([{$group:{_id:"$nombre",stock:{$max:"$stock"} }},{$sort:{stock:-1}},{$limit:3} ])
+```
+
+ ![alt text](image-18.png)
+
+## Funciones definidas en system.js
+Definir una función calcularDescuento(precio, porcentaje) que devuelva el precio con descuento aplicado.
+
+```javascript
+function calcularDescuento(precio, porcentaje){  let total = precio - (precio * porcentaje )/100; return total};
+```
+
+![alt text](image-19.png)
+
+Definir una función clienteActivo(idCliente) que devuelva true si el cliente tiene más de 3 compras registradas.
+
+
