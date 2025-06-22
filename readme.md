@@ -171,6 +171,18 @@ function calcularDescuento(precio, porcentaje){  let total = precio - (precio * 
 
 ![alt text](image-19.png)
 
-Definir una función clienteActivo(idCliente) que devuelva true si el cliente tiene más de 3 compras registradas.
+- Definir una función clienteActivo(idCliente) que devuelva true si el cliente tiene más de 3 compras registradas.
 
+```javascript
+function clienteActivo(idCliente){    let cliente = db.clientes.findOne({_id:idCliente});print(cliente.compras.length);if (cliente.compras.length >3) {return print(true)} else {return print(false)};};
+```
 
+![alt text](image-20.png)
+
+- Definir una función verificarStock(productoId, cantidadDeseada) que retorne si hay suficiente stock.
+
+```javascript
+function verificarStock(productoId, cantidadDeseada){let producto  = db.productos.findOne({_id:productoId}); if (producto.stock > cantidadDeseada) { return print("si hay suficiente stock")  } else { return print("no hay suficiente stock") };};
+```
+
+![alt text](image-21.png)
