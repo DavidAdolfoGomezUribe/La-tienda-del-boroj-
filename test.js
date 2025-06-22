@@ -1,0 +1,1 @@
+db.ventas.aggregate([{ $unwind: "$productos" }, {$group: {_id: "$productos.productoId",totalUnidadesVendidas: { $sum: "$productos.cantidad" }}},{ $sort: { totalUnidadesVendidas: -1 } }])
